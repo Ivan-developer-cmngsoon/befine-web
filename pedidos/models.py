@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from productos.models import Producto
+
 
 class Pedido(models.Model):
     ESTADOS = [
@@ -22,3 +24,12 @@ class Pedido(models.Model):
 
     def __str__(self):
         return f'Pedido #{self.id} - {self.cliente.username}'
+
+class DetallePedido(models.Model):
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='detalles')
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField()
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f'{self.cantidad} x {self.producto.nombre}'
