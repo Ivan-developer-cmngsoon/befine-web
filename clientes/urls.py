@@ -7,5 +7,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
     path('perfil/', views.perfil_cliente, name='perfil_cliente'),
     path('registro/', views.registro_cliente, name='registro'),
+    path('completar-perfil/', views.completar_perfil, name='completar_perfil'),
 
 ]

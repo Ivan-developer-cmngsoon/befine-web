@@ -3,5 +3,12 @@
 {% block content %}
 <h2>Mi Perfil</h2>
 <p>Hola, {{ user.username }}. Bienvenido a tu cuenta de Befine.</p>
+{% if not tiene_perfil %}
+<div class="alert alert-info" role="alert">
+    💡 Aún no has completado tus datos de contacto. Esto te permitirá agilizar tus pedidos.
+    <a href="{% url 'completar_perfil' %}" class="btn btn-sm btn-primary ms-3">Completar perfil</a>
+</div>
+{% endif %}
+
 <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar sesión</a>
 {% endblock %}
