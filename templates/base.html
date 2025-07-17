@@ -27,11 +27,13 @@
                     <li class="nav-item"><a class="nav-link" href="/productos/">Productos</a></li>
                     {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="/clientes/perfil/">Mi Perfil</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'historial_pedidos' %}">Mis Pedidos</a></li>
                         <li class="nav-item"><a class="nav-link" href="/clientes/logout/">Cerrar sesión</a></li>
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="/clientes/login/">Iniciar sesión</a></li>
                         <li class="nav-item"><a class="nav-link" href="/clientes/registro/">Registrarme</a></li>
                     {% endif %}
+
                 </ul>
             </div>
         </div>

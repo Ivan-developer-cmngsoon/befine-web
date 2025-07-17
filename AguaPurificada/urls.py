@@ -10,8 +10,6 @@ urlpatterns = [
     path('clientes/', include('clientes.urls')),
     path('pedidos/', include('pedidos.urls')),
     path('carrito/', include('carrito.urls')),
-    
-
 ]
 
 # Soporte para mostrar imágenes (solo en desarrollo)

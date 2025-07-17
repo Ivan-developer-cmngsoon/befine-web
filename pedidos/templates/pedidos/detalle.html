@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <h2 class="text-center mb-4">Detalle del Pedido #{{ pedido.id }}</h2>
+
+        <ul class="list-group mb-4">
+            {% for item in detalles %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ item.producto.nombre }}</strong><br>
+                    {{ item.cantidad }} unidad{{ item.cantidad|pluralize }} × ${{ item.producto.precio }}
+                </div>
+                <span class="badge bg-primary rounded-pill">${{ item.subtotal|floatformat:0 }}</span>
+            </li>
+            {% endfor %}
+            <li class="list-group-item text-end fw-bold">
+                Total: ${{ pedido.total|floatformat:0 }}
+            </li>
+        </ul>
+
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'historial_pedidos' %}" class="btn btn-secondary">← Volver al historial</a>
+            <a href="{% url 'repetir_pedido' pedido.id %}" class="btn btn-success">🔁 Repetir pedido</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

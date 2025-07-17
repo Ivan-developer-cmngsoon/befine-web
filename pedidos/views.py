@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import PedidoForm
-from .models import DetallePedido
+from .models import DetallePedido, Pedido
 from carrito.models import ItemCarrito
+from productos.models import Producto
 
 @login_required
 def realizar_pedido(request):
@@ -50,3 +51,35 @@ def realizar_pedido(request):
         form = PedidoForm()
 
     return render(request, 'pedidos/realizar_pedido.html', {'form': form})
+@login_required
+def historial_pedidos(request):
+    pedidos = Pedido.objects.filter(cliente=request.user).order_by('-fecha')
+    return render(request, 'pedidos/historial.html', {'pedidos': pedidos})
+
+@login_required
+def detalle_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id, cliente=request.user)
+    detalles = pedido.detalles.all()
+    return render(request, 'pedidos/detalle.html', {'pedido': pedido, 'detalles': detalles})
+
+@login_required
+def repetir_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id, cliente=request.user)
+    detalles = pedido.detalles.all()
+
+    for item in detalles:
+        producto = item.producto
+        # Busca si ya existe en el carrito
+        existente = ItemCarrito.objects.filter(usuario=request.user, producto=producto).first()
+        if existente:
+            existente.cantidad += item.cantidad
+            existente.save()
+        else:
+            ItemCarrito.objects.create(
+                usuario=request.user,
+                producto=producto,
+                cantidad=item.cantidad
+            )
+
+    messages.success(request, f"Los productos del pedido #{pedido.id} fueron añadidos a tu carrito.")
+    return redirect('ver_carrito')
