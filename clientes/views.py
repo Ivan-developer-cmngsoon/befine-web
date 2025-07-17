@@ -26,6 +26,7 @@ def registro_cliente(request):
     return render(request, 'clientes/registro.html', {'form': form})
 
 
+
 @login_required
 def completar_perfil(request):
     try:
