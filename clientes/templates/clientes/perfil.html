@@ -1,30 +1,43 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-10 col-lg-8">
-        <div class="card shadow-sm border-0 bg-light">
-            <div class="card-body">
-                <h3 class="card-title text-center mb-4">👤 Mi Perfil</h3>
-                <p class="text-center">Hola, <strong>{{ user.username }}</strong>. Bienvenido a tu cuenta de <strong>Befine</strong>.</p>
-
-                {% if not tiene_perfil %}
-                <div class="alert alert-warning d-flex justify-content-between align-items-center mt-4">
-                    <div>
-                        💡 Aún no has completado tus datos de contacto. Esto te permitirá agilizar tus pedidos.
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow border-0 bg-white rounded-4">
+                <div class="card-body px-4 py-5">
+                    <div class="text-center mb-4">
+                        <div class="rounded-circle bg-primary text-white d-inline-flex justify-content-center align-items-center" style="width: 60px; height: 60px; font-size: 28px;">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <h3 class="mt-3">Hola, {{ user.first_name|default:user.username }}</h3>
+                        <p class="text-muted">Bienvenido a tu cuenta de <strong>Befine</strong>. Aquí puedes gestionar tus pedidos y datos de contacto.</p>
                     </div>
-                    <div>
-                        <a href="{% url 'completar_perfil' %}" class="btn btn-sm btn-primary">Completar perfil</a>
-                    </div>
-                </div>
-                {% endif %}
 
-                <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
-                    <a href="{% url 'historial_pedidos' %}" class="btn btn-outline-primary">
-                        📦 Ver historial de pedidos
-                    </a>
-                    <a href="{% url 'logout' %}" class="btn btn-danger">
-                        🔒 Cerrar sesión
-                    </a>
+                    {% if not tiene_perfil %}
+                    <div class="alert alert-warning d-flex justify-content-between align-items-center px-4 py-3 rounded-3">
+                        <div>
+                            <strong>💡 Completa tu perfil:</strong> Agrega dirección, comuna y teléfono para agilizar tus pedidos.
+                        </div>
+                        <a href="{% url 'completar_perfil' %}" class="btn btn-sm btn-primary ms-3">
+                            Completar perfil
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-success text-center py-3 rounded-3">
+                        ✅ Tu perfil de contacto está completo.
+                    </div>
+                    {% endif %}
+
+                    <hr class="my-4">
+
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="{% url 'historial_pedidos' %}" class="btn btn-outline-primary px-4 py-2 rounded-3 shadow-sm">
+                            📦 Ver historial de pedidos
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn btn-danger px-4 py-2 rounded-3 shadow-sm">
+                            🔒 Cerrar sesión
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

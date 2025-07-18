@@ -2,13 +2,14 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import RegistroForm, PerfilClienteForm  # IMPORTAMOS el nuevo formulario
-from .models import PerfilCliente  # IMPORTAMOS el nuevo modelo
+
+from .forms import RegistroForm, PerfilUsuarioForm
+from .models import PerfilUsuario
 
 
 @login_required
 def perfil_cliente(request):
-    tiene_perfil = hasattr(request.user, 'perfilcliente')
+    tiene_perfil = hasattr(request.user, 'perfilusuario')
     return render(request, 'clientes/perfil.html', {'tiene_perfil': tiene_perfil})
 
 
@@ -26,22 +27,17 @@ def registro_cliente(request):
     return render(request, 'clientes/registro.html', {'form': form})
 
 
-
 @login_required
 def completar_perfil(request):
-    try:
-        perfil = request.user.perfilcliente
-    except PerfilCliente.DoesNotExist:
-        perfil = None
+    perfil, creado = PerfilUsuario.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
-        form = PerfilClienteForm(request.POST, instance=perfil)
+        form = PerfilUsuarioForm(request.POST, instance=perfil)
         if form.is_valid():
-            perfil = form.save(commit=False)
-            perfil.user = request.user
-            perfil.save()
+            form.save()
+            messages.success(request, 'Perfil actualizado correctamente.')
             return redirect('perfil_cliente')
     else:
-        form = PerfilClienteForm(instance=perfil)
+        form = PerfilUsuarioForm(instance=perfil)
 
     return render(request, 'clientes/completar_perfil.html', {'form': form})
