@@ -1,13 +1,92 @@
 {% extends "base.html" %}
+{% load static form_extras %}
 
 {% block content %}
-<h2>Crear Cuenta</h2>
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 animate__animated animate__fadeIn">
+            <div class="card-body p-4">
+                <h3 class="text-center mb-4">
+                    <i class="bi bi-journal-text me-2"></i> Crear Cuenta
+                </h3>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Registrarme</button>
-</form>
+                <form method="post" novalidate>
+                    {% csrf_token %}
 
-<p>¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
+                    <!-- Usuario -->
+                    <div class="mb-3">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">Nombre de usuario</label>
+                        {{ form.username|add_class:"form-control" }}
+                        {% if form.username.errors %}
+                            <div class="text-danger small">{{ form.username.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Correo -->
+                    <div class="mb-3">
+                        <label for="{{ form.email.id_for_label }}" class="form-label">Correo electrónico</label>
+                        {{ form.email|add_class:"form-control" }}
+                        {% if form.email.errors %}
+                            <div class="text-danger small">{{ form.email.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <div class="input-group">
+                            {{ form.password|add_class:"form-control" }}
+                            <button type="button" class="btn btn-outline-secondary toggle-password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        {% if form.password.errors %}
+                            <div class="text-danger small">{{ form.password.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Confirmar contraseña -->
+                    <div class="mb-3">
+                        <label for="password2" class="form-label">Confirmar contraseña</label>
+                        <div class="input-group">
+                            {{ form.password2|add_class:"form-control" }}
+                            <button type="button" class="btn btn-outline-secondary toggle-password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        {% if form.password2.errors %}
+                            <div class="text-danger small">{{ form.password2.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Botón -->
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-success">Registrarme</button>
+                    </div>
+                </form>
+
+                <hr>
+                <p class="text-center mt-3 mb-0">
+                    ¿Ya tienes cuenta? <a href="{% url 'login' %}" class="text-decoration-none">Inicia sesión aquí</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Mostrar/Ocultar contraseña
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', () => {
+            const input = button.parentElement.querySelector('input');
+            const icon = button.querySelector('i');
+            const isPassword = input.getAttribute('type') === 'password';
+            input.setAttribute('type', isPassword ? 'text' : 'password');
+            icon.classList.toggle('bi-eye');
+            icon.classList.toggle('bi-eye-slash');
+        });
+    });
+</script>
 {% endblock %}

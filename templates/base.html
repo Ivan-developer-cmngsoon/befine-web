@@ -2,8 +2,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Befine Agua Purificada</title>
+    <title>{% block title %}Befine Agua Purificada{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Befine: Agua purificada de calidad, entregas rápidas en Santiago.">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
     {% load static %}
 
@@ -13,11 +17,15 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS Personalizado -->
     <link rel="stylesheet" href="{% static 'css/toast.css' %}">
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -63,8 +71,8 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-        <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top px-3">
+        <div class="container-fluid">
             <a class="navbar-brand" href="/">Befine</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -76,14 +84,13 @@
                         <li class="nav-item"><a class="nav-link" href="/clientes/perfil/"><i class="bi bi-person"></i> Mi Perfil</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'historial_pedidos' %}"><i class="bi bi-box-seam"></i> Mis Pedidos</a></li>
                         <li class="nav-item ms-2">
-                            <form action="{% url 'logout' %}" method="post">
+                            <form action="{% url 'logout' %}" method="post" class="d-inline">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-outline-danger btn-sm">
                                     <i class="bi bi-box-arrow-right"></i> Cerrar sesión
                                 </button>
                             </form>
                         </li>
-
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="/clientes/login/"><i class="bi bi-box-arrow-in-right"></i> Iniciar sesión</a></li>
                         <li class="nav-item"><a class="nav-link" href="/clientes/registro/"><i class="bi bi-person-plus"></i> Registrarme</a></li>
@@ -93,11 +100,11 @@
         </div>
     </nav>
 
-    <!-- Mensajes toast -->
+    <!-- Toasts -->
     {% if messages %}
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
             {% for message in messages %}
-            <div class="toast align-items-center {{ message.tags|default:"text-bg-info" }} border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast align-items-center {{ message.tags|default:'text-bg-info' }} border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
                         {{ message }}
@@ -110,29 +117,27 @@
     {% endif %}
 
     <!-- Contenido principal -->
-    <main class="container py-4">
+    <main class="container px-3 px-md-5 py-4">
         {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="text-center text-muted">
+    <footer class="text-center text-muted mt-4">
         <p class="mb-0">© 2025 Agua Purificada Befine · Todos los derechos reservados</p>
     </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Activar toasts automáticamente -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const toastElements = document.querySelectorAll('.toast');
-            toastElements.forEach((toastEl) => {
-                const toast = new bootstrap.Toast(toastEl, {
-                    delay: 5000,
-                    autohide: true
-                });
-                toast.show();
+            document.querySelectorAll('.toast').forEach(function (toastEl) {
+                new bootstrap.Toast(toastEl, { delay: 5000, autohide: true }).show();
             });
         });
     </script>
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>
