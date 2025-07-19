@@ -6,6 +6,7 @@ from .models import DetallePedido, Pedido
 from carrito.models import ItemCarrito
 from productos.models import Producto
 
+
 @login_required
 def realizar_pedido(request):
     usuario = request.user
@@ -14,7 +15,7 @@ def realizar_pedido(request):
     # 🔒 Validación: carrito vacío
     if not carrito.exists():
         messages.warning(request, "Tu carrito está vacío. Agrega productos antes de confirmar.")
-        return redirect('ver_carrito')  # Asegúrate de que esta URL esté configurada
+        return redirect('ver_carrito')
 
     if request.method == 'POST':
         form = PedidoForm(request.POST)
@@ -46,11 +47,22 @@ def realizar_pedido(request):
             carrito.delete()
 
             messages.success(request, f'Pedido #{pedido.id} confirmado con éxito.')
-            return redirect('perfil_cliente')  # Luego cambiarás esto a historial si lo implementas
+            return redirect('perfil_cliente')  # Puedes cambiar esto a 'historial_pedidos' si ya lo usas
     else:
-        form = PedidoForm()
+        # 🧠 Precargar datos del último pedido si existen
+        ultimo_pedido = Pedido.objects.filter(cliente=usuario).order_by('-fecha').first()
+        if ultimo_pedido:
+            form = PedidoForm(initial={
+                'direccion': ultimo_pedido.direccion,
+                'comuna': ultimo_pedido.comuna,
+                'telefono': ultimo_pedido.telefono,
+                'detalle': ''
+            })
+        else:
+            form = PedidoForm()
 
     return render(request, 'pedidos/realizar_pedido.html', {'form': form})
+
 @login_required
 def historial_pedidos(request):
     pedidos = Pedido.objects.filter(cliente=request.user).order_by('-fecha')

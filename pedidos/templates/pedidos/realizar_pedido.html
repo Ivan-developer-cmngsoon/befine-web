@@ -1,19 +1,50 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}Confirmar Pedido | Befine{% endblock %}
+
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
-        <h2 class="mb-4 text-center">Realizar Pedido</h2>
+    <div class="col-md-10 col-lg-8 animate__animated animate__fadeIn">
+        <div class="card shadow border-0 bg-white rounded-4 p-4">
+            <h2 class="text-center mb-4 text-primary fw-bold">
+                <i class="bi bi-droplet-half me-2"></i>Confirmar Pedido
+            </h2>
 
-        <form method="post" class="card p-4 shadow-sm border-0 bg-light">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <div class="d-grid">
-                <button type="submit" class="btn btn-success">Confirmar Pedido</button>
+            <p class="text-center text-muted mb-4">
+                Verifica tu dirección y contacto antes de confirmar el pedido. Puedes editar los datos si es necesario.
+            </p>
+
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_direccion" class="form-label fw-semibold">Dirección de entrega</label>
+                    {{ form.direccion }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_comuna" class="form-label fw-semibold">Comuna</label>
+                    {{ form.comuna }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_telefono" class="form-label fw-semibold">Teléfono</label>
+                    {{ form.telefono }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_detalle" class="form-label fw-semibold">Detalles del pedido (opcional)</label>
+                    {{ form.detalle }}
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success btn-lg shadow-sm">
+                        <i class="bi bi-check-circle-fill me-1"></i> Confirmar Pedido
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-4 text-center">
+                <a href="{% url 'ver_carrito' %}" class="btn btn-outline-secondary">
+                    ← Volver al carrito
+                </a>
             </div>
-        </form>
-
-        <div class="mt-4 text-center">
-            <a href="{% url 'ver_carrito' %}" class="btn btn-outline-secondary">← Volver al carrito</a>
         </div>
     </div>
 </div>
