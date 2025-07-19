@@ -70,36 +70,66 @@
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top px-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Befine</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="/productos/"><i class="bi bi-droplet"></i> Productos</a></li>
-                    {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="/clientes/perfil/"><i class="bi bi-person"></i> Mi Perfil</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'historial_pedidos' %}"><i class="bi bi-box-seam"></i> Mis Pedidos</a></li>
-                        <li class="nav-item ms-2">
-                            <form action="{% url 'logout' %}" method="post" class="d-inline">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-outline-danger btn-sm">
-                                    <i class="bi bi-box-arrow-right"></i> Cerrar sesión
-                                </button>
-                            </form>
-                        </li>
-                    {% else %}
-                        <li class="nav-item"><a class="nav-link" href="/clientes/login/"><i class="bi bi-box-arrow-in-right"></i> Iniciar sesión</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/clientes/registro/"><i class="bi bi-person-plus"></i> Registrarme</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
+   <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top px-3">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Befine</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="/productos/">
+                        <i class="bi bi-droplet"></i> Productos
+                    </a>
+                </li>
 
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" href="{% url 'ver_carrito' %}">
+                            <i class="bi bi-cart-fill"></i> Carrito
+                            {% if carrito_count > 0 %}
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ carrito_count }}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/clientes/perfil/">
+                            <i class="bi bi-person"></i> Mi Perfil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'historial_pedidos' %}">
+                            <i class="bi bi-box-seam"></i> Mis Pedidos
+                        </a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/clientes/login/">
+                            <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/clientes/registro/">
+                            <i class="bi bi-person-plus"></i> Registrarme
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
     <!-- Toasts -->
     {% if messages %}
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">

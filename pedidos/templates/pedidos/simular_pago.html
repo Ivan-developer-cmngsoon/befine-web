@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0"><i class="bi bi-credit-card-2-front"></i> Simulación de Pago Online</h4>
+    </div>
+    <div class="card-body">
+
+      <p>Estás a punto de pagar el <strong>Pedido #{{ pedido.id }}</strong> por un total de:</p>
+      <h3 class="text-success mb-4">${{ pedido.total|floatformat:0 }}</h3>
+
+      <p><strong>Dirección:</strong> {{ pedido.direccion }} | <strong>Comuna:</strong> {{ pedido.comuna }}</p>
+      <p><strong>Teléfono:</strong> {{ pedido.telefono }}</p>
+
+      <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success btn-lg">
+          <i class="bi bi-wallet2"></i> Realizar Pago con WebPay
+        </button>
+        <a href="{% url 'ver_carrito' %}" class="btn btn-secondary btn-lg ms-2">
+          <i class="bi bi-x-circle"></i> Cancelar
+        </a>
+      </form>
+
+      <hr class="my-4">
+
+      <p class="text-muted">
+        Este es un entorno de prueba. En el futuro aquí se integrará un proveedor de pagos como WebPay, MercadoPago u otro.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

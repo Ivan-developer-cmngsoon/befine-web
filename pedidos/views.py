@@ -12,7 +12,6 @@ def realizar_pedido(request):
     usuario = request.user
     carrito = ItemCarrito.objects.filter(usuario=usuario)
 
-    # 🔒 Validación: carrito vacío
     if not carrito.exists():
         messages.warning(request, "Tu carrito está vacío. Agrega productos antes de confirmar.")
         return redirect('ver_carrito')
@@ -20,15 +19,14 @@ def realizar_pedido(request):
     if request.method == 'POST':
         form = PedidoForm(request.POST)
         if form.is_valid():
-            # 🧾 Guardar información del pedido (sin total aún)
             pedido = form.save(commit=False)
             pedido.cliente = usuario
-            pedido.total = 0  # Se actualizará después
+            pedido.total = 0  # se actualizará
+            pedido.pagado = False
+            pedido.estado = 'pendiente'
             pedido.save()
 
             total_pedido = 0
-
-            # 🧺 Crear detalle por cada ítem del carrito
             for item in carrito:
                 subtotal = item.subtotal()
                 DetallePedido.objects.create(
@@ -39,27 +37,21 @@ def realizar_pedido(request):
                 )
                 total_pedido += subtotal
 
-            # 💰 Actualizar total real del pedido
             pedido.total = total_pedido
             pedido.save()
 
-            # 🧹 Vaciar el carrito
-            carrito.delete()
-
-            messages.success(request, f'Pedido #{pedido.id} confirmado con éxito.')
-            return redirect('perfil_cliente')  # Puedes cambiar esto a 'historial_pedidos' si ya lo usas
-    else:
-        # 🧠 Precargar datos del último pedido si existen
-        ultimo_pedido = Pedido.objects.filter(cliente=usuario).order_by('-fecha').first()
-        if ultimo_pedido:
-            form = PedidoForm(initial={
-                'direccion': ultimo_pedido.direccion,
-                'comuna': ultimo_pedido.comuna,
-                'telefono': ultimo_pedido.telefono,
-                'detalle': ''
-            })
+            # No eliminamos el carrito todavía, se hace tras el pago
+            return redirect('simular_pago', pedido_id=pedido.id)
         else:
-            form = PedidoForm()
+            print(form.errors)
+            
+    else:
+        ultimo_pedido = Pedido.objects.filter(cliente=usuario).order_by('-fecha').first()
+        form = PedidoForm(initial={
+            'direccion': ultimo_pedido.direccion if ultimo_pedido else '',
+            'comuna': ultimo_pedido.comuna if ultimo_pedido else '',
+            'telefono': ultimo_pedido.telefono if ultimo_pedido else '',
+        })
 
     return render(request, 'pedidos/realizar_pedido.html', {'form': form})
 
@@ -95,3 +87,21 @@ def repetir_pedido(request, pedido_id):
 
     messages.success(request, f"Los productos del pedido #{pedido.id} fueron añadidos a tu carrito.")
     return redirect('ver_carrito')
+#simulacion de pago:@login_required
+def simular_pago(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id, cliente=request.user)
+
+    if request.method == 'POST':
+        # Simulamos un pago exitoso
+        pedido.pagado = True
+        pedido.estado = 'pagado'
+        pedido.metodo_pago = 'webpay'
+        pedido.save()
+
+        # Vaciar el carrito solo después del pago exitoso
+        ItemCarrito.objects.filter(usuario=request.user).delete()
+
+        messages.success(request, f'¡Pago realizado con éxito! Pedido #{pedido.id} confirmado.')
+        return redirect('historial_pedidos')
+
+    return render(request, 'pedidos/simular_pago.html', {'pedido': pedido})

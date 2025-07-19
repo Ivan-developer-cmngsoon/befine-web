@@ -14,13 +14,16 @@ def ver_carrito(request):
 def agregar_al_carrito(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     item, creado = ItemCarrito.objects.get_or_create(usuario=request.user, producto=producto)
+
     if not creado:
         item.cantidad += 1
         item.save()
         messages.info(request, f'Se aumentó la cantidad de "{producto.nombre}" en tu carrito.')
     else:
         messages.success(request, f'"{producto.nombre}" fue agregado a tu carrito.')
-    return redirect('ver_carrito')
+
+    # Redirige a la misma página donde estaba el usuario
+    return redirect(request.META.get('HTTP_REFERER', 'ver_carrito'))
 
 @login_required
 def eliminar_del_carrito(request, item_id):

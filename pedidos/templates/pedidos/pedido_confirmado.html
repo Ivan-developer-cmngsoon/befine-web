@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="text-center">
+    <i class="bi bi-check-circle-fill text-success display-1 mb-4"></i>
+    <h2 class="text-success">¡Pedido Confirmado!</h2>
+    <p class="lead mb-4">Gracias por tu compra, {{ user.first_name|default:user.username }}.</p>
+
+    <div class="card shadow-sm mx-auto" style="max-width: 500px;">
+      <div class="card-body">
+        <h5 class="card-title">Resumen de tu pedido</h5>
+        <p class="card-text mb-1"><strong>ID Pedido:</strong> #{{ pedido.id }}</p>
+        <p class="card-text mb-1"><strong>Total:</strong> ${{ pedido.total|floatformat:0 }}</p>
+        <p class="card-text mb-1"><strong>Dirección:</strong> {{ pedido.direccion }}</p>
+        <p class="card-text mb-1"><strong>Comuna:</strong> {{ pedido.comuna }}</p>
+        <p class="card-text mb-1"><strong>Teléfono:</strong> {{ pedido.telefono }}</p>
+        <p class="card-text mb-1"><strong>Fecha:</strong> {{ pedido.fecha|date:"d M Y - H:i" }}</p>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <a href="{% url 'historial_pedidos' %}" class="btn btn-primary">
+        <i class="bi bi-box-seam"></i> Ver Historial de Pedidos
+      </a>
+      <a href="{% url 'productos' %}" class="btn btn-outline-secondary ms-2">
+        <i class="bi bi-droplet"></i> Seguir comprando
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
