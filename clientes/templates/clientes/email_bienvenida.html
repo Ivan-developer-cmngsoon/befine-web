@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenido a Befine</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f2f7fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background-color: #fff;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header img {
+            max-height: 60px;
+        }
+        h2 {
+            color: #3498db;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #27ae60;
+            color: white !important;
+            padding: 12px 24px;
+            border-radius: 6px;
+            margin-top: 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://i.imgur.com/LPFryle.png" alt="Befine Logo">  <!-- Cambia esta URL por tu logo -->
+        </div>
+
+        <h2>¡Bienvenido/a, {{ nombre }}! 💧</h2>
+        <p>
+            Gracias por unirte a <strong>Befine</strong>, tu nueva forma inteligente de pedir agua purificada.
+            A partir de ahora, podrás comprar recargas, dispensadores y más desde nuestra web.
+        </p>
+        <p>
+            Para comenzar, asegúrate de completar tu perfil con dirección y teléfono para que podamos entregar tu pedido sin demoras.
+        </p>
+
+        <div style="text-align: center;">
+            <a href="http://127.0.0.1:8000/productos/" class="cta-button">Ir a la tienda</a>
+        </div>
+
+        <p style="margin-top: 30px;">
+            ¿Tienes dudas? Puedes escribirnos en cualquier momento. Estamos aquí para ayudarte 🤝
+        </p>
+
+        <div class="footer">
+            &copy; 2025 Befine. Todos los derechos reservados.
+        </div>
+    </div>
+</body>
+</html>

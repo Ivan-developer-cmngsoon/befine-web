@@ -5,6 +5,10 @@ from .forms import PedidoForm
 from .models import DetallePedido, Pedido
 from carrito.models import ItemCarrito
 from productos.models import Producto
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 
 
 @login_required
@@ -39,6 +43,24 @@ def realizar_pedido(request):
 
             pedido.total = total_pedido
             pedido.save()
+            # Construir y enviar el correo
+            asunto = "Confirmación de tu pedido en Befine"
+            contexto = {
+                'nombre': usuario.first_name or usuario.username,
+                'direccion': pedido.direccion,
+                'comuna': pedido.comuna,
+                'telefono': pedido.telefono,
+                'total': pedido.total,
+            }
+            html_mensaje = render_to_string('pedidos/email_confirmacion.html', contexto)
+            texto_mensaje = strip_tags(html_mensaje)
+            send_mail(
+                asunto,
+                texto_mensaje,
+                'tucorreo@gmail.com',  # Desde (puedes usar DEFAULT_FROM_EMAIL también)
+                [usuario.email],       # Destinatario
+                html_message=html_mensaje,
+            )
 
             # No eliminamos el carrito todavía, se hace tras el pago
             return redirect('simular_pago', pedido_id=pedido.id)

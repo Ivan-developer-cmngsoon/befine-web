@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; background-color: #f9f9f9; padding: 20px; }
+        .box { background: white; border-radius: 8px; padding: 20px; border: 1px solid #ddd; }
+        h2 { color: #007BFF; }
+        ul { padding-left: 20px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Gracias por tu pedido, {{ nombre }}!</h2>
+        <p>Hemos recibido tu pedido correctamente. Estos son los detalles:</p>
+        <ul>
+            <li><strong>Dirección:</strong> {{ direccion }}</li>
+            <li><strong>Comuna:</strong> {{ comuna }}</li>
+            <li><strong>Teléfono:</strong> {{ telefono }}</li>
+        </ul>
+        <p><strong>Total:</strong> ${{ total }}</p>
+        <p>Nos pondremos en contacto pronto para confirmar la entrega.</p>
+        <p><em>Agua Purificada Befine 💧</em></p>
+    </div>
+</body>
+</html>
