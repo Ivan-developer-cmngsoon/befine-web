@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Panel de Administración de Pedidos</h2>
+
+    <!-- Filtros -->
+    <form method="get" class="row g-3 mb-4 bg-light p-3 rounded">
+        <div class="col-md-3">
+            <label class="form-label">Estado</label>
+            <select name="estado" class="form-select">
+                <option value="">Todos</option>
+                <option value="pendiente" {% if filtro_estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+                <option value="en_proceso" {% if filtro_estado == 'en_proceso' %}selected{% endif %}>En proceso</option>
+                <option value="en_camino" {% if filtro_estado == 'en_camino' %}selected{% endif %}>En camino</option>
+                <option value="entregado" {% if filtro_estado == 'entregado' %}selected{% endif %}>Entregado</option>
+                <option value="cancelado" {% if filtro_estado == 'cancelado' %}selected{% endif %}>Cancelado</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Cliente</label>
+            <input type="text" name="cliente" value="{{ filtro_cliente }}" class="form-control" placeholder="Nombre de usuario">
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label">Desde</label>
+            <input type="date" name="fecha_inicio" value="{{ filtro_fecha_inicio }}" class="form-control">
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label">Hasta</label>
+            <input type="date" name="fecha_fin" value="{{ filtro_fecha_fin }}" class="form-control">
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+        </div>
+    </form>
+
+    <!-- Tabla -->
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>Teléfono</th>
+                    <th>Comuna</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                <tr>
+                    <td>#{{ pedido.id }}</td>
+                    <td>{{ pedido.cliente.username }}</td>
+                    <td>{{ pedido.fecha|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        <span class="badge bg-secondary">{{ pedido.get_estado_display }}</span>
+                    </td>
+                    <td>${{ pedido.total }}</td>
+                    <td>{{ pedido.telefono }}</td>
+                    <td>{{ pedido.comuna }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEstado{{ pedido.id }}">Editar estado</button>
+                    </td>
+                </tr>
+
+                <!-- Modal -->
+                <div class="modal fade" id="modalEstado{{ pedido.id }}" tabindex="-1" aria-labelledby="modalLabel{{ pedido.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <form method="post" action="{% url 'actualizar_estado_pedido' pedido.id %}">
+                                {% csrf_token %}
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalLabel{{ pedido.id }}">Actualizar Estado - Pedido #{{ pedido.id }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="estado{{ pedido.id }}" class="form-label">Nuevo Estado</label>
+                                        <select name="estado" id="estado{{ pedido.id }}" class="form-select" required>
+                                            {% for key, label in pedido.ESTADOS %}
+                                                <option value="{{ key }}" {% if pedido.estado == key %}selected{% endif %}>{{ label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Guardar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

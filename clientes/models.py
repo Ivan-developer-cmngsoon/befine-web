@@ -17,4 +17,5 @@ class PerfilUsuario(models.Model):
     referencia = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.user.username} ({self.get_rol_display})"
+        return f"{self.user.username} ({self.get_rol_display()})"
+

@@ -86,6 +86,21 @@
                 </li>
 
                 {% if user.is_authenticated %}
+                    {% if user.perfilusuario.rol in "admin dueno" %}
+                        <li class="nav-item">
+                            <span class="nav-link disabled text-muted">Rol: {{ user.perfilusuario.get_rol_display }}</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-outline-primary btn-sm ms-2" href="{% url 'admin_pedidos' %}">
+                                🧾 Panel de Pedidos
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <span class="nav-link disabled text-muted">Usuario: {{ user.username }}</span>
+                        </li>
+                    {% endif %}
+
                     <li class="nav-item">
                         <a class="nav-link position-relative" href="{% url 'ver_carrito' %}">
                             <i class="bi bi-cart-fill"></i> Carrito
@@ -127,6 +142,7 @@
                     </li>
                 {% endif %}
             </ul>
+
         </div>
     </div>
 </nav>

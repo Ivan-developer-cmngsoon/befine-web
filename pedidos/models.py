@@ -21,6 +21,7 @@ class Pedido(models.Model):
     telefono = models.CharField(max_length=20)
     detalle = models.TextField(blank=True)
     total = models.DecimalField(max_digits=10, decimal_places=2)
+    fecha_actualizacion_estado = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f'Pedido #{self.id} - {self.cliente.username}'

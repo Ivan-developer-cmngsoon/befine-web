@@ -19,7 +19,21 @@
                 <tr>
                     <td>#{{ pedido.id }}</td>
                     <td>{{ pedido.fecha|date:"d/m/Y H:i" }}</td>
-                    <td>{{ pedido.get_estado_display }}</td>
+                    <td>
+                        {% if pedido.estado == 'pendiente' %}
+                            <span class="badge bg-secondary"><i class="bi bi-hourglass-split"></i> Pendiente</span>
+                        {% elif pedido.estado == 'pagado' %}
+                            <span class="badge bg-primary"><i class="bi bi-currency-dollar"></i> Pagado</span>
+                        {% elif pedido.estado == 'en_proceso' %}
+                            <span class="badge bg-warning text-dark"><i class="bi bi-tools"></i> En proceso</span>
+                        {% elif pedido.estado == 'en_camino' %}
+                            <span class="badge bg-info text-dark"><i class="bi bi-truck"></i> En camino</span>
+                        {% elif pedido.estado == 'entregado' %}
+                            <span class="badge bg-success"><i class="bi bi-check-circle"></i> Entregado</span>
+                        {% elif pedido.estado == 'fallido' %}
+                            <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Fallido</span>
+                        {% endif %}
+                    </td>
                     <td>${{ pedido.total|floatformat:0 }}</td>
                     <td>
                         <div class="btn-group" role="group">
