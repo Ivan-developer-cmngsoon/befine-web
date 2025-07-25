@@ -9,139 +9,12 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
-    {% load static %}
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <!-- CSS Personalizado -->
-    <link rel="stylesheet" href="{% static 'css/toast.css' %}">
-
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: #0d6efd;
-        }
-
-        .navbar-light .navbar-nav .nav-link {
-            font-weight: 500;
-            color: #333;
-            transition: color 0.3s ease;
-        }
-
-        .navbar-light .navbar-nav .nav-link:hover {
-            color: #0d6efd;
-        }
-
-        footer {
-            padding: 1rem 0;
-            background-color: #fff;
-            border-top: 1px solid #dee2e6;
-            font-size: 0.9rem;
-        }
-
-        .toast {
-            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
-        }
-
-        .card {
-            border-radius: 1rem;
-        }
-
-        .btn {
-            border-radius: 0.5rem;
-        }
-    </style>
+    {% include 'partials/bootstrap_base.html' %}
 </head>
 <body>
 
-   <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top px-3">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">Befine</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link" href="/productos/">
-                        <i class="bi bi-droplet"></i> Productos
-                    </a>
-                </li>
+    {% include 'partials/navbar.html' %}
 
-               {% if user.is_authenticated %}
-                    {% if user.perfilusuario.rol == 'admin' or user.perfilusuario.rol == 'dueno' %}
-                        <li class="nav-item">
-                            <span class="nav-link disabled text-muted">Rol: {{ user.perfilusuario.get_rol_display }}</span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-outline-primary btn-sm ms-2" href="{% url 'admin_pedidos' %}">
-                                🧾 Panel de Pedidos
-                            </a>
-                        </li>
-                    {% endif %}
-
-                    <li class="nav-item">
-                        <a class="nav-link position-relative" href="{% url 'ver_carrito' %}">
-                            <i class="bi bi-cart-fill"></i> Carrito
-                            {% if carrito_count > 0 %}
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{ carrito_count }}
-                                </span>
-                            {% endif %}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clientes/perfil/">
-                            <i class="bi bi-person"></i> Mi Perfil
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'historial_pedidos' %}">
-                            <i class="bi bi-box-seam"></i> Mis Pedidos
-                        </a>
-                    </li>
-                    <li class="nav-item ms-2">
-                        <form action="{% url 'logout' %}" method="post" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
-                            </button>
-                        </form>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clientes/login/">
-                            <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clientes/registro/">
-                            <i class="bi bi-person-plus"></i> Registrarme
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-
-        </div>
-    </div>
-</nav>
     <!-- Toasts -->
     {% if messages %}
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
@@ -163,10 +36,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="text-center text-muted mt-4">
-        <p class="mb-0">© 2025 Agua Purificada Befine · Todos los derechos reservados</p>
-    </footer>
+    {% include 'partials/footer.html' %}
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
