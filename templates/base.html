@@ -85,8 +85,8 @@
                     </a>
                 </li>
 
-                {% if user.is_authenticated %}
-                    {% if user.perfilusuario.rol in "admin dueno" %}
+               {% if user.is_authenticated %}
+                    {% if user.perfilusuario.rol == 'admin' or user.perfilusuario.rol == 'dueno' %}
                         <li class="nav-item">
                             <span class="nav-link disabled text-muted">Rol: {{ user.perfilusuario.get_rol_display }}</span>
                         </li>
@@ -94,10 +94,6 @@
                             <a class="nav-link btn btn-outline-primary btn-sm ms-2" href="{% url 'admin_pedidos' %}">
                                 🧾 Panel de Pedidos
                             </a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <span class="nav-link disabled text-muted">Usuario: {{ user.username }}</span>
                         </li>
                     {% endif %}
 
