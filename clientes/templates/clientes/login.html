@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% load form_extras %}  <!-- Aquí se activa -->
+{% load form_extras %}
 
 {% block content %}
 <div class="row justify-content-center">
@@ -34,6 +34,13 @@
                     <!-- Botón -->
                     <div class="d-grid mt-4">
                         <button type="submit" class="btn btn-primary rounded-pill py-2">Ingresar</button>
+                    </div>
+
+                    <!-- Enlace a recuperación de contraseña -->
+                    <div class="text-center mt-3">
+                        <a href="{% url 'clientes:password_reset' %}" class="text-decoration-none text-muted">
+                            <i class="bi bi-question-circle me-1"></i>¿Olvidaste tu contraseña?
+                        </a>
                     </div>
                 </form>
 
