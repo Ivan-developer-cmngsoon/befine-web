@@ -60,9 +60,7 @@
                     <td>#{{ pedido.id }}</td>
                     <td>{{ pedido.cliente.username }}</td>
                     <td>{{ pedido.fecha|date:"d/m/Y H:i" }}</td>
-                    <td>
-                        <span class="badge bg-secondary">{{ pedido.get_estado_display }}</span>
-                    </td>
+                    <td><span class="badge bg-secondary">{{ pedido.get_estado_display }}</span></td>
                     <td>${{ pedido.total }}</td>
                     <td>{{ pedido.telefono }}</td>
                     <td>{{ pedido.comuna }}</td>
@@ -103,5 +101,50 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Paginación -->
+    <nav aria-label="Paginación de pedidos" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?{% if filtro_estado %}estado={{ filtro_estado }}&{% endif %}
+                        {% if filtro_cliente %}cliente={{ filtro_cliente }}&{% endif %}
+                        {% if filtro_fecha_inicio %}fecha_inicio={{ filtro_fecha_inicio }}&{% endif %}
+                        {% if filtro_fecha_fin %}fecha_fin={{ filtro_fecha_fin }}&{% endif %}
+                        page={{ page_obj.previous_page_number }}">Anterior</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if num >= page_obj.number|add:"-2" and num <= page_obj.number|add:"2" %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if filtro_estado %}estado={{ filtro_estado }}&{% endif %}
+                                {% if filtro_cliente %}cliente={{ filtro_cliente }}&{% endif %}
+                                {% if filtro_fecha_inicio %}fecha_inicio={{ filtro_fecha_inicio }}&{% endif %}
+                                {% if filtro_fecha_fin %}fecha_fin={{ filtro_fecha_fin }}&{% endif %}
+                                page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?{% if filtro_estado %}estado={{ filtro_estado }}&{% endif %}
+                        {% if filtro_cliente %}cliente={{ filtro_cliente }}&{% endif %}
+                        {% if filtro_fecha_inicio %}fecha_inicio={{ filtro_fecha_inicio }}&{% endif %}
+                        {% if filtro_fecha_fin %}fecha_fin={{ filtro_fecha_fin }}&{% endif %}
+                        page={{ page_obj.next_page_number }}">Siguiente</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+            {% endif %}
+        </ul>
+    </nav>
 </div>
 {% endblock %}

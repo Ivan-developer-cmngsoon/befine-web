@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.utils.timezone import now
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 @login_required
 def realizar_pedido(request):
@@ -146,9 +147,9 @@ def actualizar_estado_pedido(request, pedido_id):
 
     return redirect('admin_pedidos')
 
-@user_passes_test(es_admin)
 def admin_pedidos(request):
-    pedidos = Pedido.objects.all().order_by('-fecha')
+    # Filtros
+    pedidos = Pedido.objects.all().select_related('cliente').order_by('-fecha')
 
     estado = request.GET.get('estado')
     cliente = request.GET.get('cliente')
@@ -160,14 +161,22 @@ def admin_pedidos(request):
     if cliente:
         pedidos = pedidos.filter(cliente__username__icontains=cliente)
     if fecha_inicio:
-        pedidos = pedidos.filter(fecha__gte=fecha_inicio)
+        pedidos = pedidos.filter(fecha__date__gte=fecha_inicio)
     if fecha_fin:
-        pedidos = pedidos.filter(fecha__lte=fecha_fin)
+        pedidos = pedidos.filter(fecha__date__lte=fecha_fin)
 
-    return render(request, 'pedidos/admin_pedidos_list.html', {
-        'pedidos': pedidos,
-        'filtro_estado': estado or '',
-        'filtro_cliente': cliente or '',
-        'filtro_fecha_inicio': fecha_inicio or '',
-        'filtro_fecha_fin': fecha_fin or '',
-    })
+    # PAGINACIÓN
+    paginator = Paginator(pedidos, 10)  # 10 pedidos por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+
+    context = {
+        'pedidos': page_obj,
+        'filtro_estado': estado,
+        'filtro_cliente': cliente,
+        'filtro_fecha_inicio': fecha_inicio,
+        'filtro_fecha_fin': fecha_fin,
+        'page_obj': page_obj,
+    }
+    return render(request, 'admin_pedidos_list.html', context)
