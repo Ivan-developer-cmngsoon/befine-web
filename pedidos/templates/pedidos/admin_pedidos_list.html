@@ -6,16 +6,14 @@
     <h2 class="mb-4">Panel de Administración de Pedidos</h2>
 
     <!-- Filtros -->
-    <form method="get" class="row g-3 mb-4 bg-light p-3 rounded">
+    <form method="get" class="row g-3 mb-4 bg-light p-3 rounded shadow-sm">
         <div class="col-md-3">
             <label class="form-label">Estado</label>
             <select name="estado" class="form-select">
                 <option value="">Todos</option>
-                <option value="pendiente" {% if filtro_estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
-                <option value="en_proceso" {% if filtro_estado == 'en_proceso' %}selected{% endif %}>En proceso</option>
-                <option value="en_camino" {% if filtro_estado == 'en_camino' %}selected{% endif %}>En camino</option>
-                <option value="entregado" {% if filtro_estado == 'entregado' %}selected{% endif %}>Entregado</option>
-                <option value="cancelado" {% if filtro_estado == 'cancelado' %}selected{% endif %}>Cancelado</option>
+                {% for key, label in pedido.ESTADOS %}
+                    <option value="{{ key }}" {% if filtro_estado == key %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
             </select>
         </div>
 
@@ -65,7 +63,9 @@
                     <td>{{ pedido.telefono }}</td>
                     <td>{{ pedido.comuna }}</td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEstado{{ pedido.id }}">Editar estado</button>
+                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEstado{{ pedido.id }}">
+                            Editar estado
+                        </button>
                     </td>
                 </tr>
 
@@ -107,11 +107,7 @@
         <ul class="pagination justify-content-center">
             {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?{% if filtro_estado %}estado={{ filtro_estado }}&{% endif %}
-                        {% if filtro_cliente %}cliente={{ filtro_cliente }}&{% endif %}
-                        {% if filtro_fecha_inicio %}fecha_inicio={{ filtro_fecha_inicio }}&{% endif %}
-                        {% if filtro_fecha_fin %}fecha_fin={{ filtro_fecha_fin }}&{% endif %}
-                        page={{ page_obj.previous_page_number }}">Anterior</a>
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{{ query_params }}">Anterior</a>
                 </li>
             {% else %}
                 <li class="page-item disabled"><span class="page-link">Anterior</span></li>
@@ -123,11 +119,7 @@
                         <li class="page-item active"><span class="page-link">{{ num }}</span></li>
                     {% else %}
                         <li class="page-item">
-                            <a class="page-link" href="?{% if filtro_estado %}estado={{ filtro_estado }}&{% endif %}
-                                {% if filtro_cliente %}cliente={{ filtro_cliente }}&{% endif %}
-                                {% if filtro_fecha_inicio %}fecha_inicio={{ filtro_fecha_inicio }}&{% endif %}
-                                {% if filtro_fecha_fin %}fecha_fin={{ filtro_fecha_fin }}&{% endif %}
-                                page={{ num }}">{{ num }}</a>
+                            <a class="page-link" href="?page={{ num }}{{ query_params }}">{{ num }}</a>
                         </li>
                     {% endif %}
                 {% endif %}
@@ -135,16 +127,13 @@
 
             {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?{% if filtro_estado %}estado={{ filtro_estado }}&{% endif %}
-                        {% if filtro_cliente %}cliente={{ filtro_cliente }}&{% endif %}
-                        {% if filtro_fecha_inicio %}fecha_inicio={{ filtro_fecha_inicio }}&{% endif %}
-                        {% if filtro_fecha_fin %}fecha_fin={{ filtro_fecha_fin }}&{% endif %}
-                        page={{ page_obj.next_page_number }}">Siguiente</a>
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{{ query_params }}">Siguiente</a>
                 </li>
             {% else %}
                 <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
             {% endif %}
         </ul>
+
     </nav>
 </div>
 {% endblock %}

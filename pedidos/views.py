@@ -179,4 +179,4 @@ def admin_pedidos(request):
         'filtro_fecha_fin': fecha_fin,
         'page_obj': page_obj,
     }
-    return render(request, 'admin_pedidos_list.html', context)
+    return render(request, 'pedidos/admin_pedidos_list.html', context)
