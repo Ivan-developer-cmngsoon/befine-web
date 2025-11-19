@@ -33,3 +33,16 @@
   opacity: 0;
   transform: translateX(100%);
 }
+.navbar {
+  background: #ffffffcc !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.navbar-brand img {
+  height: 34px;
+}
+
+.navbar .nav-link.active {
+  font-weight: 600;
+}
