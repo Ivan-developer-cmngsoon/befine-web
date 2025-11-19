@@ -1,0 +1,383 @@
+/* ================================
+   BEFINE THEME GLOBAL
+   ================================ */
+
+/* 1. RESET SUAVE Y BASE GENERAL */
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #f5f7fb; /* gris muy suave, casi blanco */
+    color: #1f2933;           /* gris oscuro legible */
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.5;
+}
+
+/* Ajuste del main para respirar mejor */
+main.container {
+    max-width: 1120px;
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+/* Títulos */
+h1, .h1 {
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+h2, .h2,
+h3, .h3 {
+    font-weight: 600;
+}
+
+/* Enlaces */
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Colores de marca */
+:root {
+    --befine-primary: #2563eb;  /* azul principal */
+    --befine-primary-soft: #e0ecff;
+    --befine-accent: #0ea5e9;   /* celeste/acento */
+    --befine-danger: #e11d48;
+    --befine-border-soft: #e5e7eb;
+}
+
+/* ================================
+   2. NAVBAR
+   ================================ */
+
+.navbar {
+    background: #ffffffcc !important; /* blanco con leve transparencia */
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--befine-border-soft);
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+}
+
+.navbar-brand img {
+    height: 34px;
+}
+
+/* Links del navbar */
+.navbar .nav-link {
+    font-size: 0.95rem;
+    color: #4b5563;
+}
+
+.navbar .nav-link:hover {
+    color: var(--befine-primary);
+}
+
+.navbar .nav-link.active,
+.navbar .nav-link:focus {
+    color: var(--befine-primary);
+    font-weight: 600;
+}
+
+/* Botones dentro del navbar */
+.navbar .btn-primary,
+.navbar .btn-outline-primary {
+    font-size: 0.85rem;
+    padding-inline: 0.9rem;
+    border-radius: 999px;
+}
+
+/* Badge del carrito */
+.navbar .badge {
+    font-size: 0.65rem;
+}
+
+/* ================================
+   3. BOTONES
+   ================================ */
+
+.btn-primary {
+    background-color: var(--befine-primary);
+    border-color: var(--befine-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+.btn-outline-primary {
+    color: var(--befine-primary);
+    border-color: var(--befine-primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--befine-primary-soft);
+    color: var(--befine-primary);
+}
+
+.btn-outline-danger {
+    border-color: var(--befine-danger);
+    color: var(--befine-danger);
+}
+.btn-outline-danger:hover {
+    background-color: #fee2e2;
+    color: var(--befine-danger);
+}
+
+/* Botones pequeños más redondos */
+.btn-sm {
+    border-radius: 999px;
+}
+
+/* ================================
+   4. CARDS Y CONTENEDORES
+   ================================ */
+
+.card {
+    border-radius: 16px;
+    border: 1px solid rgba(15, 23, 42, 0.04);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    background-color: #ffffff;
+}
+
+/* Cards de productos (por si usas .product-card) */
+.product-card img {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    object-fit: cover;
+}
+
+/* Grid de productos genérico */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.75rem;
+}
+
+/* Bloques de secciones tipo panel */
+.section-block {
+    background-color: #ffffff;
+    border-radius: 18px;
+    padding: 1.75rem;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+/* ================================
+   5. FORMULARIOS
+   ================================ */
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+    border-color: #d1d5db;
+    font-size: 0.95rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--befine-primary);
+    box-shadow: 0 0 0 0.15rem rgba(37, 99, 235, 0.2);
+}
+
+/* Labels */
+.form-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* ================================
+   6. TABLAS (Historial de pedidos)
+   ================================ */
+
+.table {
+    background-color: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table thead {
+    background-color: #eff5ff;
+    color: #111827;
+}
+
+.table thead th {
+    border-bottom-width: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+.table tbody td {
+    vertical-align: middle;
+    font-size: 0.9rem;
+}
+
+/* Badges de estado */
+.badge {
+    border-radius: 999px;
+    font-weight: 500;
+    padding-inline: 0.7rem;
+    padding-block: 0.3rem;
+    font-size: 0.75rem;
+}
+
+.badge-pagado {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.badge-pendiente,
+.badge-en_proceso {
+    background-color: #e0f2fe;
+    color: #075985;
+}
+
+.badge-en_camino {
+    background-color: #fef9c3;
+    color: #854d0e;
+}
+
+.badge-cancelado {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+/* ================================
+   7. MODAL (Carrito)
+   ================================ */
+
+.modal-content {
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.25);
+}
+
+.modal-header {
+    border-bottom-color: rgba(148, 163, 184, 0.35);
+}
+
+.modal-footer {
+    border-top-color: rgba(148, 163, 184, 0.35);
+}
+
+/* ================================
+   8. FOOTER
+   ================================ */
+
+footer {
+    background-color: #f3f4f6;
+    border-top: 1px solid var(--befine-border-soft);
+    padding: 1.2rem 0;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* ================================
+   9. TOASTS (adaptado a tu estilo)
+   ================================ */
+
+#toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1055;
+}
+
+.toast {
+    background-color: #111827;
+    color: #f9fafb;
+    padding: 12px 18px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    opacity: 0.96;
+    border: none;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.35);
+    font-size: 0.9rem;
+}
+
+.toast.success,
+.text-bg-success {
+    background-color: #16a34a;
+}
+
+.toast.error,
+.text-bg-danger {
+    background-color: #dc2626;
+}
+
+.toast.warning,
+.text-bg-warning {
+    background-color: #facc15;
+    color: #1f2937;
+}
+
+.toast.hide {
+    opacity: 0;
+    transform: translateX(100%);
+}
+
+/* ================================
+   10. UTILIDADES PEQUEÑAS
+   ================================ */
+
+/* Secciones centradas máximo */
+.section-narrow {
+    max-width: 720px;
+    margin-inline: auto;
+}
+
+/* Texto secundario suave */
+.text-muted-soft {
+    color: #9ca3af !important;
+}
+
+/* Separadores suaves */
+.hr-soft {
+    border-color: rgba(148, 163, 184, 0.4);
+}
+/* HERO BEFINE */
+.hero-befine {
+    padding: 2.5rem 0 1rem 0;
+}
+
+@media (min-width: 992px) {
+    .hero-befine {
+        padding-top: 3rem;
+        padding-bottom: 2rem;
+    }
+}
+
+.hero-befine-card {
+    position: relative;
+    border-radius: 24px;
+    background: radial-gradient(circle at top left, #e0f2fe 0, #eef2ff 40%, #ffffff 100%);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.5);
+}
+
+.hero-befine-circle {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.26), transparent 70%);
+    top: -40px;
+    right: -40px;
+    border-radius: 999px;
+    pointer-events: none;
+}
+
+.hero-befine-content {
+    position: relative;
+    z-index: 1;
+}
