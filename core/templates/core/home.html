@@ -1,9 +1,70 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Inicio | Befine Agua Purificada{% endblock %}
 
 {% block content %}
 
+<!-- Carrusel Befine -->
+<section class="mb-4">
+  <div id="befineCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="6000">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#befineCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#befineCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#befineCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+
+    <div class="carousel-inner rounded-4 shadow-sm overflow-hidden">
+      <!-- Slide 1 -->
+      <div class="carousel-item active">
+        <div class="carousel-gradient"></div>
+        <img src="{% static 'imgB/5.png' %}" class="d-block w-100 hero-carousel-img" alt="Recarga de agua Befine">
+        <div class="carousel-caption d-none d-md-block text-start">
+          <h5 class="fw-semibold">Recargas de 20 litros</h5>
+          <p class="mb-2">Agua purificada para tu hogar o negocio, con entrega rápida en zona norte.</p>
+          <a href="/productos/" class="btn btn-light btn-sm">
+            Ver recargas <i class="bi bi-arrow-right ms-1"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <div class="carousel-gradient"></div>
+        <img src="{% static 'imgB/5.png' %}" class="d-block w-100 hero-carousel-img" alt="Dispensadores de agua Befine">
+        <div class="carousel-caption d-none d-md-block text-start">
+          <h5 class="fw-semibold">Dispensadores y packs</h5>
+          <p classmb-2>Complementa tus recargas con dispensadores cómodos y packs iniciales.</p>
+          <a href="/productos/" class="btn btn-light btn-sm">
+            Ver dispensadores
+          </a>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="carousel-item">
+        <div class="carousel-gradient"></div>
+        <img src="{% static 'imgB/5.png' %}" class="d-block w-100 hero-carousel-img" alt="Servicio de reparto Befine">
+        <div class="carousel-caption d-none d-md-block text-start">
+          <h5 class="fw-semibold">Servicio pensado para ti</h5>
+          <p class="mb-2">Seguimiento de pedidos, historial y atención cercana para tus compras.</p>
+          <a href="/clientes/registro/" class="btn btn-light btn-sm">
+            Crear cuenta
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#befineCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#befineCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
+  </div>
+</section>
 <section class="hero-befine mb-4">
   <div class="row align-items-center g-4">
     <!-- Columna texto -->
@@ -66,5 +127,6 @@
     </div>
   </div>
 </section>
+
 
 {% endblock %}

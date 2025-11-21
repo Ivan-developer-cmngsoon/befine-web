@@ -381,3 +381,61 @@ footer {
     position: relative;
     z-index: 1;
 }
+/* Carrusel Hero Befine */
+.hero-carousel {
+    border-radius: 1.5rem;
+}
+
+.hero-carousel-img {
+    max-height: 320px;
+    object-fit: cover;
+}
+
+.carousel-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.05));
+    z-index: 1;
+}
+
+.carousel-item > img {
+    position: relative;
+    z-index: 0;
+}
+
+.carousel-caption {
+    z-index: 2;
+    bottom: 1.8rem;
+}
+
+.carousel-caption h5 {
+    font-size: 1.25rem;
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background-color: rgba(148, 163, 184, 0.9);
+}
+
+.carousel-indicators .active {
+    width: 18px;
+    background-color: #ffffff;
+}
+
+/* En móvil, que no moleste tanto */
+@media (max-width: 767.98px) {
+    .hero-carousel-img {
+        max-height: 220px;
+    }
+
+    .carousel-caption {
+        font-size: 0.8rem;
+        bottom: 1.1rem;
+    }
+
+    .carousel-caption p {
+        display: none; /* texto largo fuera en pantallas chicas */
+    }
+}
