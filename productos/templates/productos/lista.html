@@ -4,44 +4,95 @@
 {% block title %}Catálogo de Productos | Befine{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <h2 class="mb-4 text-center text-primary fw-bold animate__animated animate__fadeInDown">
-        <i class="bi bi-bag-heart-fill me-2"></i>Catálogo de Productos
-    </h2>
+<section class="products-page py-3">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3">
+        <div>
+            <h2 class="mb-1 text-primary fw-bold">
+                <i class="bi bi-bag-heart-fill me-2"></i>Catálogo de Productos
+            </h2>
+            <p class="text-muted-soft small mb-0">
+                Recargas, packs iniciales y dispensadores para tu hogar o negocio.
+            </p>
+        </div>
+
+        <div class="mt-3 mt-md-0 text-md-end small text-muted-soft">
+            {% if user.is_authenticated %}
+                <span><i class="bi bi-person-check"></i> Estás conectado como <strong>{{ user.username }}</strong></span>
+            {% else %}
+                <span><i class="bi bi-box-arrow-in-right"></i> Inicia sesión para completar tu compra</span>
+            {% endif %}
+        </div>
+    </div>
 
     {% if productos %}
-        <div class="row g-4">
+        <div class="products-grid">
             {% for producto in productos %}
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 rounded-4 animate__animated animate__fadeIn">
+                <article class="card product-card h-100 animate__animated animate__fadeIn">
+                    <div class="product-card-img-wrapper">
                         {% if producto.imagen %}
-                            <img src="{{ producto.imagen.url }}" class="card-img-top rounded-top-4 img-fluid" alt="{{ producto.nombre }}">
+                            <img src="{{ producto.imagen.url }}" class="product-card-img" alt="{{ producto.nombre }}">
                         {% else %}
-                            <img src="{% static 'img/sin-imagen.png' %}" class="card-img-top rounded-top-4 img-fluid" alt="Sin imagen">
+                            <img src="{% static 'img/sin-imagen.png' %}" class="product-card-img" alt="Sin imagen">
                         {% endif %}
 
-                        <div class="card-body d-flex flex-column justify-content-between">
+                        <span class="badge product-badge">
+                            {% if producto.categoria == 'recarga' %}
+                                Recarga 20L
+                            {% elif producto.categoria == 'pack' %}
+                                Pack inicial
+                            {% elif producto.categoria == 'basico' %}
+                                Dispensador básico
+                            {% elif producto.categoria == 'electrico' %}
+                                Dispensador eléctrico
+                            {% else %}
+                                Producto
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-semibold mb-1 text-dark">
+                            {{ producto.nombre }}
+                        </h5>
+
+                        {% if producto.descripcion %}
+                            <p class="card-text text-muted small mb-2">
+                                {{ producto.descripcion|truncatechars:80 }}
+                            </p>
+                        {% else %}
+                            <p class="card-text text-muted small mb-2">
+                                Agua purificada de alta calidad, ideal para el uso diario.
+                            </p>
+                        {% endif %}
+
+                        <div class="d-flex align-items-baseline justify-content-between mt-auto pt-2">
                             <div>
-                                <h5 class="card-title text-success fw-bold mb-1">{{ producto.nombre }}</h5>
-                                <p class="card-text text-muted small">{{ producto.descripcion|truncatechars:70 }}</p>
-                                <p class="fw-semibold text-dark mb-2">Precio: <span class="text-primary">${{ producto.precio }}</span></p>
+                                <span class="text-muted small d-block">Precio</span>
+                                <span class="product-price fw-bold text-primary">
+                                    ${{ producto.precio }}
+                                </span>
                             </div>
-                            <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-outline-success btn-sm mt-auto w-100">
-                                <i class="bi bi-cart-plus-fill"></i> Agregar al carrito
+
+                            <a href="{% url 'agregar_al_carrito' producto.id %}"
+                               class="btn btn-primary btn-sm product-add-btn d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart-plus me-1"></i>
+                                <span>Agregar</span>
                             </a>
                         </div>
                     </div>
-                </div>
+                </article>
             {% endfor %}
         </div>
     {% else %}
-        <p class="text-muted text-center mt-5">No hay productos disponibles por ahora.</p>
+        <div class="text-center mt-5">
+            <p class="text-muted mb-3">No hay productos disponibles por ahora.</p>
+        </div>
     {% endif %}
 
     <div class="text-center mt-5">
-        <a href="{% url 'ver_carrito' %}" class="btn btn-primary btn-lg px-4">
+        <a href="{% url 'ver_carrito' %}" class="btn btn-outline-primary btn-lg px-4">
             <i class="bi bi-bag-check-fill me-1"></i> Ver carrito
         </a>
     </div>
-</div>
+</section>
 {% endblock %}

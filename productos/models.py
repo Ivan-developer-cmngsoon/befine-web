@@ -2,11 +2,12 @@ from django.db import models
 
 class Producto(models.Model):
     CATEGORIAS = [
-        ('recarga', 'Recarga'),
-        ('pack', 'Pack Inicial'),
-        ('basico', 'Dispensador Básico'),
-        ('electrico', 'Dispensador Eléctrico'),
-    ]
+    ('recargas', 'Recargas'),
+    ('dispensadores', 'Dispensadores'),
+    ('accesorios', 'Accesorios'),
+    ('Promociones', 'Pack Inicial')
+        ]
+
 
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(blank=True)
