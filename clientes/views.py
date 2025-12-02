@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib import messages
 
 from .forms import RegistroForm, PerfilUsuarioForm
@@ -10,6 +9,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
+
 @login_required
 def perfil_cliente(request):
     tiene_perfil = hasattr(request.user, 'perfilusuario')
@@ -17,34 +17,9 @@ def perfil_cliente(request):
 
 
 def registro_cliente(request):
-    if request.method == 'POST':
-        form = RegistroForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
-            user.save()
-            messages.success(request, 'Registro exitoso. Ahora puedes iniciar sesión.')
-            return redirect('login')
-    else:
-        form = RegistroForm()
-    return render(request, 'clientes/registro.html', {'form': form})
-
-
-@login_required
-def completar_perfil(request):
-    perfil, creado = PerfilUsuario.objects.get_or_create(user=request.user)
-
-    if request.method == 'POST':
-        form = PerfilUsuarioForm(request.POST, instance=perfil)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Perfil actualizado correctamente.')
-            return redirect('perfil_cliente')
-    else:
-        form = PerfilUsuarioForm(instance=perfil)
-
-    return render(request, 'clientes/completar_perfil.html', {'form': form})
-def registro_cliente(request):
+    """
+    Registro de nuevo usuario + envío de correo de bienvenida.
+    """
     if request.method == 'POST':
         form = RegistroForm(request.POST)
         if form.is_valid():
@@ -62,13 +37,32 @@ def registro_cliente(request):
             send_mail(
                 "Bienvenido a Befine 💧",
                 texto_mensaje,
-                'tucorreo@gmail.com',  # Usa DEFAULT_FROM_EMAIL si prefieres
+                'tucorreo@gmail.com',  # idealmente usar DEFAULT_FROM_EMAIL
                 [user.email],
                 html_message=html_mensaje,
             )
 
             messages.success(request, 'Registro exitoso. Ahora puedes iniciar sesión.')
-            return redirect('login')
+            # IMPORTANTE: usamos el namespace 'clientes'
+            return redirect('clientes:login')
     else:
         form = RegistroForm()
+
     return render(request, 'clientes/registro.html', {'form': form})
+
+
+@login_required
+def completar_perfil(request):
+    perfil, creado = PerfilUsuario.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        form = PerfilUsuarioForm(request.POST, instance=perfil)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Perfil actualizado correctamente.')
+            # También mejor usar el namespace aquí
+            return redirect('clientes:perfil_cliente')
+    else:
+        form = PerfilUsuarioForm(instance=perfil)
+
+    return render(request, 'clientes/completar_perfil.html', {'form': form})

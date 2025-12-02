@@ -120,7 +120,7 @@ def simular_pago(request, pedido_id):
 
         ItemCarrito.objects.filter(usuario=request.user).delete()
 
-        messages.success(request, f'¡Pago realizado con éxito! Pedido #{pedido.id} confirmado.')
+        messages.success(request, f'¡Agendado con exito! Pedido #{pedido.id} confirmado.')
         return redirect('historial_pedidos')
 
     return render(request, 'pedidos/simular_pago.html', {'pedido': pedido})
